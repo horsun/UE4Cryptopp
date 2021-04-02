@@ -1,7 +1,6 @@
 ﻿// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 #include "TBBCryptBPLibrary.h"
-#include "TBBCrypt.h"
 #include "aes.h"
 #include "hex.h"         // StreamTransformationFilter  
 #include "modes.h"	     // CFB_Mode  
@@ -10,7 +9,6 @@
 #include <string>
 #include "channels.h"
 #include "mqueue.h"
-#include "misc/Base64.h"
 using namespace std;
 using namespace CryptoPP;
 #pragma comment(lib, "cryptlib.lib" )
@@ -35,52 +33,50 @@ SecByteBlock getKey()
 
 FString EnCrypto(string inPlain)
 {
-	string cipher;
-	string cipherOut;
+	string cipher; //存密文
+	string cipherOut; //存输出的string密文
 	SecByteBlock Key = getKey();
 	ECB_Mode<AES>::Encryption e;
 	e.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
-
+	//这一步StingSource是将明文通过 encryption进行加密，得到cipher密文
 	StringSource(inPlain, true,
 	             new StreamTransformationFilter(e,
 	                                            new StringSink(cipher)
 	                                            , BlockPaddingSchemeDef::ONE_AND_ZEROS_PADDING
 	                                            , true
-	             ) //这里开始设置加密的明文和秘钥     
+	             )
 	);
+	//这一步是通过StringSource 将cipher 密文转成可以正常打印阅读的 密文，主要关注HexEncoder 
 	StringSource(cipher, true,
 	             new HexEncoder(
 		             new StringSink(cipherOut)
-	             ) // HexEncoder
-	); // StringSource
+	             )
+	);
 	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR( cipherOut.c_str()));
-
 	return UTF8_TO_TCHAR(cipherOut.c_str());
 }
 
 FString DeCrypto(string inCipher)
 {
-	string inCipherStr;
-	StringSource(inCipher, true, new HexDecoder(new StringSink(inCipherStr)));
-	string recovered;
+	string plain;//存明文
+	string plainOut;//存输出的string明文
+	//既然加密后有对密文Encoder，那我们也一样要对密文先进行Decoder
+	StringSource(inCipher, true,
+	             new HexDecoder(new StringSink(plain)
+	             )
+	);
 	ECB_Mode<AES>::Decryption d;
 	SecByteBlock Key = getKey();
 	d.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
-	StringSource s(inCipherStr, true,
+	StringSource s(plain, true,
 	               new StreamTransformationFilter(d,
-	                                              new StringSink(recovered)
+	                                              new StringSink(plainOut)
 	                                              , BlockPaddingSchemeDef::ONE_AND_ZEROS_PADDING
 	                                              , true
-	               ) // StreamTransformationFilter
-	); // StringSource
-	//StringSource(recovered, true,
-	//	new HexEncoder(
-	//		new StringSink(recovered)
-	//	) // HexEncoder
-	//); // StringSource
-
-	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(recovered.c_str()));
-	return UTF8_TO_TCHAR(recovered.c_str());
+	               ) 
+	); 
+	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
+	return UTF8_TO_TCHAR(plainOut.c_str());
 }
 
 FString UTBBCryptBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action)
