@@ -44,5 +44,5 @@ class UTBBCryptBPLibrary : public UBlueprintFunctionLibrary
 
 
 		UFUNCTION(BlueprintCallable, meta = (DisplayName = "AESLib", Keywords = "AESLib", aes_key = "0123456789ABCDEF0123456789ABCDEF", aes_IV = "ABCDEF0123456789"))
-		static FString AESFunctionLib(FString inString, FString aes_key, FString aes_IV,ECryptMode mode, ECryActionType action);
+		static FString AESFunctionLib(FString inString,ECryptMode mode, ECryActionType action);
 };
