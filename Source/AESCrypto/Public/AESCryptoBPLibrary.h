@@ -32,6 +32,15 @@ enum class ECryptMode : uint8
 	CTR
 };
 UENUM(BlueprintType)
+enum class ECryptPadding : uint8
+{
+	NO_PADDING,
+	ZEROS_PADDING,
+	PKCS_PADDING,
+	ONE_AND_ZEROS_PADDING,
+	DEFAULT_PADDING
+};
+UENUM(BlueprintType)
 enum class ECryActionType : uint8
 {
 	Encrypt,
@@ -44,5 +53,5 @@ class UAESCryptoBPLibrary : public UBlueprintFunctionLibrary
 
 
 		UFUNCTION(BlueprintCallable, meta = (DisplayName = "AESLib", Keywords = "AESLib", aes_key = "0123456789ABCDEF0123456789ABCDEF", aes_IV = "ABCDEF0123456789"))
-		static FString AESFunctionLib(FString inString,ECryptMode mode, ECryActionType action);
+		static FString AESFunctionLib(FString inString,ECryptMode mode, ECryActionType action,ECryptPadding padding);
 };
