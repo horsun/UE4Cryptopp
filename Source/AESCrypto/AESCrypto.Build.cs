@@ -4,9 +4,9 @@ using UnrealBuildTool;
 
 using System.IO;
 
-public class TBBCrypt : ModuleRules
+public class AESCrypto : ModuleRules
 {
-	public TBBCrypt(ReadOnlyTargetRules Target) : base(Target)
+	public AESCrypto(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		

@@ -1,16 +1,16 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
-#include "TBBCrypt.h"
+#include "AESCrypto.h"
 
-#define LOCTEXT_NAMESPACE "FTBBCryptModule"
+#define LOCTEXT_NAMESPACE "FAESCryptoModule"
 
-void FTBBCryptModule::StartupModule()
+void FAESCryptoModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
 	
 }
 
-void FTBBCryptModule::ShutdownModule()
+void FAESCryptoModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
@@ -19,4 +19,4 @@ void FTBBCryptModule::ShutdownModule()
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FTBBCryptModule, TBBCrypt)
+IMPLEMENT_MODULE(FAESCryptoModule, AESCrypto)

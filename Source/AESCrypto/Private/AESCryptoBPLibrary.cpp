@@ -1,6 +1,6 @@
 ﻿// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
-#include "TBBCryptBPLibrary.h"
+#include "AESCryptoBPLibrary.h"
 #include "aes.h"
 #include "hex.h"         // StreamTransformationFilter  
 #include "modes.h"	     // CFB_Mode  
@@ -13,7 +13,7 @@ using namespace std;
 using namespace CryptoPP;
 #pragma comment(lib, "cryptlib.lib" )
 
-UTBBCryptBPLibrary::UTBBCryptBPLibrary(const FObjectInitializer& ObjectInitializer)
+UAESCryptoBPLibrary::UAESCryptoBPLibrary(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 }
@@ -280,7 +280,7 @@ FString CTR_DeCrypto(string inCipher)
 	return UTF8_TO_TCHAR(plainOut.c_str());
 }
 #pragma endregion 
-FString UTBBCryptBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action)
+FString UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action)
 {
 	FString OutString = "";
 	const string InStringTarget = TCHAR_TO_UTF8(*inString);

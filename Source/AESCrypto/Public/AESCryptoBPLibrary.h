@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "TBBCryptBPLibrary.generated.h"
+#include "AESCryptoBPLibrary.generated.h"
 
 /*
 *	Function library class.
@@ -38,7 +38,7 @@ enum class ECryActionType : uint8
 	Decrypt,
 };
 UCLASS()
-class UTBBCryptBPLibrary : public UBlueprintFunctionLibrary
+class UAESCryptoBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
 

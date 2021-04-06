@@ -4,7 +4,7 @@
 
 #include "Modules/ModuleManager.h"
 
-class FTBBCryptModule : public IModuleInterface
+class FAESCryptoModule : public IModuleInterface
 {
 public:
 
