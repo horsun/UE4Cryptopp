@@ -1,7 +1,8 @@
 ﻿// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 #include "AESCryptoBPLibrary.h"
-#include "aes.h"
+//#include "aes.h"
+#include "../../ThirdParty/include/aes.h"  //防止和引擎内置的aes冲突
 #include "hex.h"         // StreamTransformationFilter  
 #include "modes.h"	     // CFB_Mode  
 #include <iostream>   // std:cerr    
@@ -13,10 +14,7 @@ using namespace std;
 using namespace CryptoPP;
 #pragma comment(lib, "cryptlib.lib" )
 
-UAESCryptoBPLibrary::UAESCryptoBPLibrary(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-{
-}
+
 
 static std::string KeyStr = "0123456789ABCDEF0123456789ABCDEF";
 static std::string IVStr = "ABCDEF0123456789";
