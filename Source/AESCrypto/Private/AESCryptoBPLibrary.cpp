@@ -10,6 +10,9 @@
 #include <string>
 #include "channels.h"
 #include "mqueue.h"
+#include "Serialization/ArrayReader.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
 using namespace std;
 using namespace CryptoPP;
 #pragma comment(lib, "cryptlib.lib" )
@@ -278,6 +281,69 @@ FString CTR_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 	return UTF8_TO_TCHAR(plainOut.c_str());
 }
 #pragma endregion 
+#pragma region ECBFile Function
+bool FileEncrypto(FString Path, FString FileName)
+{
+	//判断文件存在
+	if (!FPaths::FileExists(*Path))
+	{
+		return false;
+	}
+	//获取key
+	SecByteBlock Key = GetKey();
+
+	//读取文件
+	FArrayReader * Reader = new FArrayReader;
+	FFileHelper::LoadFileToArray(*Reader, *Path);
+	//定义一个二进制密文
+	vector<byte> cipher;
+	//设置长度
+	cipher.resize(Reader->TotalSize() + AES::BLOCKSIZE);
+	//定义个存二进制队列
+	ArraySink as(&cipher[0], cipher.size());
+
+	ECB_Mode<AES>::Encryption e;
+	e.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
+
+	//通过arraySource和encryption对文件流进行加密，并存在arraysink对象中
+	ArraySource(Reader->GetData(), Reader->TotalSize(), true, new StreamTransformationFilter(e, new Redirector(as), BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING, true));
+
+	cipher.resize(as.TotalPutLength());
+	TArray<uint8> data;
+	data.Append(cipher.data(), cipher.size());
+	//设置新文件保存
+	FString Savepath = FPaths::GetPath(Path) + "/" + FileName;
+	FFileHelper::SaveArrayToFile(data, *Savepath);
+	return true;
+};
+bool FileDecrypto(FString Path, FString FileName)
+{
+	//判断文件存在
+	if (!FPaths::FileExists(*Path))
+	{
+		return false;
+	}
+	//读取文件
+	FArrayReader * Reader = new FArrayReader;
+	FFileHelper::LoadFileToArray(*Reader, *Path);
+
+	vector<byte> recover;
+	recover.resize(Reader->TotalSize());
+	ArraySink as(&recover[0], recover.size()); //定义个存二进制队列
+
+	SecByteBlock Key = GetKey();
+	ECB_Mode<AES>::Decryption de;
+	de.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
+
+	ArraySource(Reader->GetData(), Reader->TotalSize(), true, new StreamTransformationFilter(de, new Redirector(as), BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING, true));
+	recover.resize(as.TotalPutLength());
+	TArray<uint8> data;
+	data.Append(recover.data(), recover.size());
+	FString SavePath = FPaths::GetPath(Path) + "/" + FileName;
+	FFileHelper::SaveArrayToFile(data, *SavePath);
+	return false;
+};
+#pragma endregion
 FString UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action, ECryptPadding padding)
 {
 	FString OutString = "";
@@ -336,8 +402,18 @@ FString UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, E
 	}
 	catch (const std::exception& e)
 	{
-		UE_LOG(LogTemp,Error,TEXT("Crash for AESCripto Function :%s"), *FString(e.what()))
+		UE_LOG(LogTemp, Error, TEXT("Crash for AESCripto Function :%s"), *FString(e.what()))
 	}
-	
+
 	return OutString;
+}
+
+void UAESCryptoBPLibrary::testfileEn()
+{
+	//FileEncrypto("C:/Users/10008/Desktop/AndroidTest/decrypt7.mp4", "1");
+}
+
+void UAESCryptoBPLibrary::testfileDe()
+{
+	//FileDecrypto("C:/Users/10008/Desktop/AndroidTest/decrypt7.mp4.b");
 }

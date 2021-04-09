@@ -54,4 +54,9 @@ class AESCRYPTO_API UAESCryptoBPLibrary : public UBlueprintFunctionLibrary
 public:
 		UFUNCTION(BlueprintCallable, meta = (DisplayName = "AESLib", Keywords = "AESLib", aes_key = "0123456789ABCDEF0123456789ABCDEF", aes_IV = "ABCDEF0123456789"))
 		static FString AESFunctionLib(FString inString,ECryptMode mode, ECryActionType action,ECryptPadding padding);
+		UFUNCTION(BlueprintCallable)
+			static void testfileEn();
+		UFUNCTION(BlueprintCallable)
+			static void testfileDe();
+
 };
