@@ -282,7 +282,7 @@ FString CTR_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 }
 #pragma endregion 
 #pragma region ECBFile Function
-bool FileEncrypto(FString Path, FString FileName)
+bool UAESCryptoBPLibrary::AESFileEncrypto(FString Path, FString FileName)
 {
 	//判断文件存在
 	if (!FPaths::FileExists(*Path))
@@ -316,7 +316,7 @@ bool FileEncrypto(FString Path, FString FileName)
 	FFileHelper::SaveArrayToFile(data, *Savepath);
 	return true;
 };
-bool FileDecrypto(FString Path, FString FileName)
+bool UAESCryptoBPLibrary::AESFileDecrypto(FString Path, FString FileName)
 {
 	//判断文件存在
 	if (!FPaths::FileExists(*Path))
@@ -343,6 +343,27 @@ bool FileDecrypto(FString Path, FString FileName)
 	FFileHelper::SaveArrayToFile(data, *SavePath);
 	return false;
 };
+FArchive * UAESCryptoBPLibrary::MediaDecrypto(FString Path)
+{
+	if (!FPaths::FileExists(*Path))
+	{
+		return nullptr;
+	}
+	FArrayReader* Reader = new FArrayReader;
+	FFileHelper::LoadFileToArray(*Reader, *Path);
+
+	vector<byte> recover;
+	recover.resize(Reader->TotalSize());
+	ArraySink as(&recover[0], recover.size()); //定义个存二进制队列
+
+	SecByteBlock Key = GetKey();
+	ECB_Mode<AES>::Decryption de;
+	de.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
+
+	ArraySource(Reader->GetData(), Reader->TotalSize(), true, new StreamTransformationFilter(de, new Redirector(as), BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING, true));
+	recover.resize(as.TotalPutLength());
+	return Reader;
+}
 #pragma endregion
 FString UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action, ECryptPadding padding)
 {
@@ -406,14 +427,4 @@ FString UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, E
 	}
 
 	return OutString;
-}
-
-void UAESCryptoBPLibrary::testfileEn()
-{
-	//FileEncrypto("C:/Users/10008/Desktop/AndroidTest/decrypt7.mp4", "1");
-}
-
-void UAESCryptoBPLibrary::testfileDe()
-{
-	//FileDecrypto("C:/Users/10008/Desktop/AndroidTest/decrypt7.mp4.b");
-}
+};
