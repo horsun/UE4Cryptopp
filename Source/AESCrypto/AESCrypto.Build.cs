@@ -55,6 +55,7 @@ public class AESCrypto : ModuleRules
         PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory , "../ThirdParty/Lib/cryptlib.lib"));
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory,"../ThirdParty/include"));
         bEnableUndefinedIdentifierWarnings = false;
+        bEnableExceptions = true;
 
     }
 }
