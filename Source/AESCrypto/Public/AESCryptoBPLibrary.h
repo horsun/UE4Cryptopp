@@ -31,33 +31,41 @@ enum class ECryptMode : uint8
 	OFB,
 	CTR
 };
+
 UENUM(BlueprintType)
 enum class ECryptPadding : uint8
 {
 	NO_PADDING,
+
 	ZEROS_PADDING,
+
 	PKCS_PADDING,
+
 	ONE_AND_ZEROS_PADDING,
+
+	W3C_PADDING,
+
 	DEFAULT_PADDING
 };
+
 UENUM(BlueprintType)
 enum class ECryActionType : uint8
 {
 	Encrypt,
 	Decrypt,
 };
+
 UCLASS()
 class AESCRYPTO_API UAESCryptoBPLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
 public:
-		UFUNCTION(BlueprintCallable, meta = (DisplayName = "AESLib", Keywords = "AESLib", aes_key = "0123456789ABCDEF0123456789ABCDEF", aes_IV = "ABCDEF0123456789"))
-		static FString AESFunctionLib(FString inString,ECryptMode mode, ECryActionType action,ECryptPadding padding);
-		UFUNCTION(BlueprintCallable)
-			static bool AESFileDecrypto(FString Path, FString FileName);
-		UFUNCTION(BlueprintCallable)
-			static bool AESFileEncrypto(FString Path, FString FileName);
-		static   FArchive * MediaDecrypto(FString Path)  ;
-
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "AESLib", Keywords = "AESLib"))
+	static FString AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action, ECryptPadding padding);
+	UFUNCTION(BlueprintCallable)
+	static bool AESFileDecrypto(FString Path, FString FileName);
+	UFUNCTION(BlueprintCallable)
+	static bool AESFileEncrypto(FString Path, FString FileName);
+	static FArchive* MediaDecrypto(FString Path);
 };

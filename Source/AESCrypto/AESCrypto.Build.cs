@@ -56,6 +56,7 @@ public class AESCrypto : ModuleRules
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory,"../ThirdParty/include"));
         bEnableUndefinedIdentifierWarnings = false;
         bEnableExceptions = true;
+        bUseRTTI = true;
 
     }
 }

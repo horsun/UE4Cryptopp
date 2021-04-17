@@ -6,7 +6,6 @@
 #include "hex.h"         // StreamTransformationFilter  
 #include "modes.h"	     // CFB_Mode  
 #include <iostream>   // std:cerr    
-#include <sstream>   // std::stringstream    
 #include <string>
 #include "channels.h"
 #include "mqueue.h"
@@ -16,7 +15,6 @@
 using namespace std;
 using namespace CryptoPP;
 #pragma comment(lib, "cryptlib.lib" )
-
 
 
 static std::string KeyStr = "0123456789ABCDEF0123456789ABCDEF";
@@ -31,6 +29,7 @@ SecByteBlock GetKey()
 		: memcpy(key, KeyStr.c_str(), AES::MAX_KEYLENGTH);
 	return key;
 }
+
 SecByteBlock GetIV()
 {
 	SecByteBlock IV(AES::BLOCKSIZE);
@@ -50,17 +49,16 @@ FString ECB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 	e.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
 	//这一步StingSource是将明文通过 encryption进行加密，得到cipher密文
 	StringSource(inPlain, true,
-		new StreamTransformationFilter(e,
-			new StringSink(cipher)
-			, padding
-			, true
-		)
+	             new StreamTransformationFilter(e,
+	                                            new StringSink(cipher)
+	                                            , padding
+	             )
 	);
 	//这一步是通过StringSource 将cipher 密文转成可以正常打印阅读的 密文，主要关注HexEncoder 
 	StringSource(cipher, true,
-		new HexEncoder(
-			new StringSink(cipherOut)
-		)
+	             new HexEncoder(
+		             new StringSink(cipherOut)
+	             )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
 	return UTF8_TO_TCHAR(cipherOut.c_str());
@@ -72,18 +70,17 @@ FString ECB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 	string plainOut; //存输出的string明文
 	//既然加密后有对密文Encoder，那我们也一样要对密文先进行Decoder
 	StringSource(inCipher, true,
-		new HexDecoder(new StringSink(plain)
-		)
+	             new HexDecoder(new StringSink(plain)
+	             )
 	);
 	ECB_Mode<AES>::Decryption d;
 	SecByteBlock Key = GetKey();
 	d.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
 	StringSource s(plain, true,
-		new StreamTransformationFilter(d,
-			new StringSink(plainOut)
-			, padding
-			, true
-		)
+	               new StreamTransformationFilter(d,
+	                                              new StringSink(plainOut)
+	                                              , padding
+	               )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
 	return UTF8_TO_TCHAR(plainOut.c_str());
@@ -99,39 +96,38 @@ FString CBC_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 	e.SetKeyWithIV((byte*)Key, AES::MAX_KEYLENGTH, GetIV());
 	//这一步StingSource是将明文通过 encryption进行加密，得到cipher密文
 	StringSource(inPlain, true,
-		new StreamTransformationFilter(e,
-			new StringSink(cipher)
-			, padding
-			, true
-		)
+	             new StreamTransformationFilter(e,
+	                                            new StringSink(cipher)
+	                                            , padding
+	             )
 	);
 	//这一步是通过StringSource 将cipher 密文转成可以正常打印阅读的 密文，主要关注HexEncoder 
 	StringSource(cipher, true,
-		new HexEncoder(
-			new StringSink(cipherOut)
-		)
+	             new HexEncoder(
+		             new StringSink(cipherOut)
+	             )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
 	return UTF8_TO_TCHAR(cipherOut.c_str());
 }
+
 FString CBC_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
 	//既然加密后有对密文Encoder，那我们也一样要对密文先进行Decoder
 	StringSource(inCipher, true,
-		new HexDecoder(new StringSink(plain)
-		)
+	             new HexDecoder(new StringSink(plain)
+	             )
 	);
 	CBC_Mode<AES>::Decryption d;
 	SecByteBlock Key = GetKey();
 	d.SetKeyWithIV((byte*)Key, AES::MAX_KEYLENGTH, GetIV());
 	StringSource s(plain, true,
-		new StreamTransformationFilter(d,
-			new StringSink(plainOut)
-			, padding
-			, true
-		)
+	               new StreamTransformationFilter(d,
+	                                              new StringSink(plainOut)
+	                                              , padding
+	               )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
 	return UTF8_TO_TCHAR(plainOut.c_str());
@@ -147,39 +143,38 @@ FString CFB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 	e.SetKeyWithIV((byte*)Key, AES::MAX_KEYLENGTH, GetIV());
 	//这一步StingSource是将明文通过 encryption进行加密，得到cipher密文
 	StringSource(inPlain, true,
-		new StreamTransformationFilter(e,
-			new StringSink(cipher)
-			, padding
-			, true
-		)
+	             new StreamTransformationFilter(e,
+	                                            new StringSink(cipher)
+	                                            , padding
+	             )
 	);
 	//这一步是通过StringSource 将cipher 密文转成可以正常打印阅读的 密文，主要关注HexEncoder 
 	StringSource(cipher, true,
-		new HexEncoder(
-			new StringSink(cipherOut)
-		)
+	             new HexEncoder(
+		             new StringSink(cipherOut)
+	             )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
 	return UTF8_TO_TCHAR(cipherOut.c_str());
 }
+
 FString CFB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
 	//既然加密后有对密文Encoder，那我们也一样要对密文先进行Decoder
 	StringSource(inCipher, true,
-		new HexDecoder(new StringSink(plain)
-		)
+	             new HexDecoder(new StringSink(plain)
+	             )
 	);
 	CFB_Mode<AES>::Decryption d;
 	SecByteBlock Key = GetKey();
 	d.SetKeyWithIV((byte*)Key, AES::MAX_KEYLENGTH, GetIV());
 	StringSource s(plain, true,
-		new StreamTransformationFilter(d,
-			new StringSink(plainOut)
-			, padding
-			, true
-		)
+	               new StreamTransformationFilter(d,
+	                                              new StringSink(plainOut)
+	                                              , padding
+	               )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
 	return UTF8_TO_TCHAR(plainOut.c_str());
@@ -195,39 +190,38 @@ FString OFB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 	e.SetKeyWithIV((byte*)Key, AES::MAX_KEYLENGTH, GetIV());
 	//这一步StingSource是将明文通过 encryption进行加密，得到cipher密文
 	StringSource(inPlain, true,
-		new StreamTransformationFilter(e,
-			new StringSink(cipher)
-			, padding
-			, true
-		)
+	             new StreamTransformationFilter(e,
+	                                            new StringSink(cipher)
+	                                            , padding
+	             )
 	);
 	//这一步是通过StringSource 将cipher 密文转成可以正常打印阅读的 密文，主要关注HexEncoder 
 	StringSource(cipher, true,
-		new HexEncoder(
-			new StringSink(cipherOut)
-		)
+	             new HexEncoder(
+		             new StringSink(cipherOut)
+	             )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
 	return UTF8_TO_TCHAR(cipherOut.c_str());
 }
+
 FString OFB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
 	//既然加密后有对密文Encoder，那我们也一样要对密文先进行Decoder
 	StringSource(inCipher, true,
-		new HexDecoder(new StringSink(plain)
-		)
+	             new HexDecoder(new StringSink(plain)
+	             )
 	);
 	OFB_Mode<AES>::Decryption d;
 	SecByteBlock Key = GetKey();
 	d.SetKeyWithIV((byte*)Key, AES::MAX_KEYLENGTH, GetIV());
 	StringSource s(plain, true,
-		new StreamTransformationFilter(d,
-			new StringSink(plainOut)
-			, padding
-			, true
-		)
+	               new StreamTransformationFilter(d,
+	                                              new StringSink(plainOut)
+	                                              , padding
+	               )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
 	return UTF8_TO_TCHAR(plainOut.c_str());
@@ -243,44 +237,43 @@ FString CTR_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 	e.SetKeyWithIV((byte*)Key, AES::MAX_KEYLENGTH, GetIV());
 	//这一步StingSource是将明文通过 encryption进行加密，得到cipher密文
 	StringSource(inPlain, true,
-		new StreamTransformationFilter(e,
-			new StringSink(cipher)
-			, padding
-			, true
-		)
+	             new StreamTransformationFilter(e,
+	                                            new StringSink(cipher)
+	                                            , padding
+	             )
 	);
 	//这一步是通过StringSource 将cipher 密文转成可以正常打印阅读的 密文，主要关注HexEncoder 
 	StringSource(cipher, true,
-		new HexEncoder(
-			new StringSink(cipherOut)
-		)
+	             new HexEncoder(
+		             new StringSink(cipherOut)
+	             )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
 	return UTF8_TO_TCHAR(cipherOut.c_str());
 }
+
 FString CTR_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
 	//既然加密后有对密文Encoder，那我们也一样要对密文先进行Decoder
 	StringSource(inCipher, true,
-		new HexDecoder(new StringSink(plain)
-		)
+	             new HexDecoder(new StringSink(plain)
+	             )
 	);
 	CTR_Mode<AES>::Decryption d;
 	SecByteBlock Key = GetKey();
 	d.SetKeyWithIV((byte*)Key, AES::MAX_KEYLENGTH, GetIV());
 	StringSource s(plain, true,
-		new StreamTransformationFilter(d,
-			new StringSink(plainOut)
-			, padding
-			, true
-		)
+	               new StreamTransformationFilter(d,
+	                                              new StringSink(plainOut)
+	                                              , padding
+	               )
 	);
 	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
 	return UTF8_TO_TCHAR(plainOut.c_str());
 }
-#pragma endregion 
+#pragma endregion
 #pragma region ECBFile Function
 bool UAESCryptoBPLibrary::AESFileEncrypto(FString Path, FString FileName)
 {
@@ -293,7 +286,7 @@ bool UAESCryptoBPLibrary::AESFileEncrypto(FString Path, FString FileName)
 	SecByteBlock Key = GetKey();
 
 	//读取文件
-	FArrayReader * Reader = new FArrayReader;
+	FArrayReader* Reader = new FArrayReader;
 	FFileHelper::LoadFileToArray(*Reader, *Path);
 	//定义一个二进制密文
 	vector<byte> cipher;
@@ -306,7 +299,9 @@ bool UAESCryptoBPLibrary::AESFileEncrypto(FString Path, FString FileName)
 	e.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
 
 	//通过arraySource和encryption对文件流进行加密，并存在arraysink对象中
-	ArraySource(Reader->GetData(), Reader->TotalSize(), true, new StreamTransformationFilter(e, new Redirector(as), BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING, true));
+	ArraySource(Reader->GetData(), Reader->TotalSize(), true,
+	            new StreamTransformationFilter(e, new Redirector(as),
+	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
 
 	cipher.resize(as.TotalPutLength());
 	TArray<uint8> data;
@@ -316,6 +311,7 @@ bool UAESCryptoBPLibrary::AESFileEncrypto(FString Path, FString FileName)
 	FFileHelper::SaveArrayToFile(data, *Savepath);
 	return true;
 };
+
 bool UAESCryptoBPLibrary::AESFileDecrypto(FString Path, FString FileName)
 {
 	//判断文件存在
@@ -324,7 +320,7 @@ bool UAESCryptoBPLibrary::AESFileDecrypto(FString Path, FString FileName)
 		return false;
 	}
 	//读取文件
-	FArrayReader * Reader = new FArrayReader;
+	FArrayReader* Reader = new FArrayReader;
 	FFileHelper::LoadFileToArray(*Reader, *Path);
 
 	vector<byte> recover;
@@ -335,7 +331,9 @@ bool UAESCryptoBPLibrary::AESFileDecrypto(FString Path, FString FileName)
 	ECB_Mode<AES>::Decryption de;
 	de.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
 
-	ArraySource(Reader->GetData(), Reader->TotalSize(), true, new StreamTransformationFilter(de, new Redirector(as), BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING, true));
+	ArraySource(Reader->GetData(), Reader->TotalSize(), true,
+	            new StreamTransformationFilter(de, new Redirector(as),
+	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
 	recover.resize(as.TotalPutLength());
 	TArray<uint8> data;
 	data.Append(recover.data(), recover.size());
@@ -343,7 +341,8 @@ bool UAESCryptoBPLibrary::AESFileDecrypto(FString Path, FString FileName)
 	FFileHelper::SaveArrayToFile(data, *SavePath);
 	return false;
 };
-FArchive * UAESCryptoBPLibrary::MediaDecrypto(FString Path)
+
+FArchive* UAESCryptoBPLibrary::MediaDecrypto(FString Path)
 {
 	if (!FPaths::FileExists(*Path))
 	{
@@ -360,12 +359,15 @@ FArchive * UAESCryptoBPLibrary::MediaDecrypto(FString Path)
 	ECB_Mode<AES>::Decryption de;
 	de.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
 
-	ArraySource(Reader->GetData(), Reader->TotalSize(), true, new StreamTransformationFilter(de, new Redirector(as), BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING, true));
+	ArraySource(Reader->GetData(), Reader->TotalSize(), true,
+	            new StreamTransformationFilter(de, new Redirector(as),
+	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
 	recover.resize(as.TotalPutLength());
 	return Reader;
 }
 #pragma endregion
-FString UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action, ECryptPadding padding)
+auto UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action,
+                                         ECryptPadding padding) -> FString
 {
 	FString OutString = "";
 	const string InStringTarget = TCHAR_TO_UTF8(*inString);
