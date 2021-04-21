@@ -49,7 +49,7 @@ public:
     static void Transform(HashWordType *digest, const HashWordType *data);
 
     /// \brief The algorithm name
-    /// \return C-style string "SM3"
+    /// \returns C-style string "SM3"
     CRYPTOPP_STATIC_CONSTEXPR const char* StaticAlgorithmName() { return "SM3"; }
 
 protected:

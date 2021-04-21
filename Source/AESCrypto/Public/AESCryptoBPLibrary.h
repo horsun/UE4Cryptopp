@@ -63,9 +63,9 @@ class AESCRYPTO_API UAESCryptoBPLibrary : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "AESLib", Keywords = "AESLib"))
 	static FString AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action, ECryptPadding padding);
-	UFUNCTION(BlueprintCallable)
-	static bool AESFileDecrypto(FString Path, FString FileName);
-	UFUNCTION(BlueprintCallable)
-	static bool AESFileEncrypto(FString Path, FString FileName);
-	static FArchive* MediaDecrypto(FString Path);
+	//UFUNCTION(BlueprintCallable)
+	//static bool AESFileDecrypto(FString Path, FString FileName);
+	//UFUNCTION(BlueprintCallable)
+	//static bool AESFileEncrypto(FString Path, FString FileName);
+	//static FArchive* MediaDecrypto(FString Path);
 };

@@ -22,8 +22,6 @@
 #include "ecp.h"
 #include "ec2n.h"
 
-#include <iosfwd>
-
 #if CRYPTOPP_MSC_VERSION
 # pragma warning(push)
 # pragma warning(disable: 4231 4275)
@@ -169,8 +167,6 @@ protected:
 	mutable Integer m_k;		// cofactor
 	mutable bool m_compress, m_encodeAsOID;		// presentation details
 };
-
-inline std::ostream& operator<<(std::ostream& os, const DL_GroupParameters_EC<ECP>::Element& obj);
 
 /// \brief Elliptic Curve Discrete Log (DL) public key
 /// \tparam EC elliptic curve field
