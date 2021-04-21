@@ -51,9 +51,23 @@ public class AESCrypto : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
-        //PublicAdditionalLibraries.Add(ModuleDirectory+"../ThirdParty/Lib/cryptlib.lib");
-        PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory , "../ThirdParty/Lib/Windows/cryptlib.lib"));
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory,"../ThirdParty/include"));
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "../ThirdParty/include"));
+
+        if (Target.Platform == UnrealTargetPlatform.Android)
+        {
+            PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
+
+            string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
+            AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "AESCrypto_APL.xml"));
+
+            PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "../ThirdParty/lib/armeabi-v7a/libcryptopp.so"));
+
+
+        }
+        if (Target.Platform == UnrealTargetPlatform.Win64)
+        {
+            PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "../ThirdParty/lib/Windows/cryptlib.lib"));
+        }
         bEnableUndefinedIdentifierWarnings = false;
         bEnableExceptions = true;
         bUseRTTI = true;
