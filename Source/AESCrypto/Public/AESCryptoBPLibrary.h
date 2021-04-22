@@ -1,41 +1,21 @@
 ﻿// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 #pragma once
+#include <string>
+using namespace std;
 
-#include "Kismet/BlueprintFunctionLibrary.h"
-#include "AESCryptoBPLibrary.generated.h"
-
-/*
-*	Function library class.
-*	Each function in it is expected to be static and represents blueprint node that can be called in any blueprint.
-*
-*	When declaring function you can define metadata for the node. Key function specifiers will be BlueprintPure and BlueprintCallable.
-*	BlueprintPure - means the function does not affect the owning object in any way and thus creates a node without Exec pins.
-*	BlueprintCallable - makes a function which can be executed in Blueprints - Thus it has Exec pins.
-*	DisplayName - full name of the node, shown when you mouse over the node and in the blueprint drop down menu.
-*				Its lets you name the node using characters not allowed in C++ function names.
-*	CompactNodeTitle - the word(s) that appear on the node.
-*	Keywords -	the list of keywords that helps you to find node when you search for it using Blueprint drop-down menu.
-*				Good example is "Print String" node which you can find also by using keyword "log".
-*	Category -	the category your node will be under in the Blueprint drop-down menu.
-*
-*	For more info on custom blueprint nodes visit documentation:
-*	https://wiki.unrealengine.com/Custom_Blueprint_Node_Creation
-*/
-UENUM(BlueprintType)
-enum class ECryptMode : uint8
+enum  ECryptMode 
 {
-	ECB,
+	ECB=0,
 	CBC,
 	CFB,
 	OFB,
 	CTR
 };
 
-UENUM(BlueprintType)
-enum class ECryptPadding : uint8
+enum  ECryptPadding 
 {
-	NO_PADDING,
+	NO_PADDING=0,
 
 	ZEROS_PADDING,
 
@@ -48,21 +28,17 @@ enum class ECryptPadding : uint8
 	DEFAULT_PADDING
 };
 
-UENUM(BlueprintType)
-enum class ECryActionType : uint8
+enum  ECryActionType 
 {
-	Encrypt,
+	Encrypt=0,
 	Decrypt,
 };
-
-UCLASS()
-class AESCRYPTO_API UAESCryptoBPLibrary : public UBlueprintFunctionLibrary
+class AESCRYPTO_API AESFunctionClass
 {
-	GENERATED_BODY()
-
 public:
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "AESLib", Keywords = "AESLib"))
-	static FString AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action, ECryptPadding padding);
+	AESFunctionClass() {};
+	~AESFunctionClass() {};
+	static string AESFunctionLib(string inString, ECryptMode mode, ECryActionType action, ECryptPadding padding);
 	//UFUNCTION(BlueprintCallable)
 	//static bool AESFileDecrypto(FString Path, FString FileName);
 	//UFUNCTION(BlueprintCallable)

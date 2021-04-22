@@ -10,7 +10,7 @@
 	<resourceCopies>
     <log text="Copying Plugin files to staging"/>
 		<isArch arch="armeabi-v7a">
-			<copyFile src="$S(PluginDir)/Source/ThirdParty/lib/armeabi-v7a/libcryptopp.so"
+			<copyFile src="$S(PluginDir)/../ThirdParty/lib/armeabi-v7a/libcryptopp.so"
 				  	dst="$S(BuildDir)/libs/armeabi-v7a/libcryptopp.so" />
 		</isArch>
 		<!-- <isArch arch="arm64-v8a">

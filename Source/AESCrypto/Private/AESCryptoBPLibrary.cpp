@@ -40,7 +40,7 @@ SecByteBlock GetIV()
 	return IV;
 }
 #pragma region ECB
-FString ECB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string ECB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string cipher; //存密文
 	string cipherOut; //存输出的string密文
@@ -60,11 +60,10 @@ FString ECB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 		             new StringSink(cipherOut)
 	             )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
-	return UTF8_TO_TCHAR(cipherOut.c_str());
+	return cipherOut;
 }
 
-FString ECB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string ECB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
@@ -82,12 +81,11 @@ FString ECB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 	                                              , padding
 	               )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
-	return UTF8_TO_TCHAR(plainOut.c_str());
+	return plainOut;
 }
 #pragma endregion
 #pragma region CBC
-FString CBC_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string CBC_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string cipher; //存密文
 	string cipherOut; //存输出的string密文
@@ -107,11 +105,10 @@ FString CBC_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 		             new StringSink(cipherOut)
 	             )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
-	return UTF8_TO_TCHAR(cipherOut.c_str());
+	return cipherOut;
 }
 
-FString CBC_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string CBC_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
@@ -129,12 +126,11 @@ FString CBC_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 	                                              , padding
 	               )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
-	return UTF8_TO_TCHAR(plainOut.c_str());
+	return plainOut;
 }
 #pragma endregion
 #pragma region CFB
-FString CFB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string CFB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string cipher; //存密文
 	string cipherOut; //存输出的string密文
@@ -154,11 +150,10 @@ FString CFB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 		             new StringSink(cipherOut)
 	             )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
-	return UTF8_TO_TCHAR(cipherOut.c_str());
+	return cipherOut;
 }
 
-FString CFB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string CFB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
@@ -176,12 +171,11 @@ FString CFB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 	                                              , padding
 	               )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
-	return UTF8_TO_TCHAR(plainOut.c_str());
+	return plainOut;
 }
 #pragma endregion
 #pragma region OFB
-FString OFB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string OFB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string cipher; //存密文
 	string cipherOut; //存输出的string密文
@@ -201,11 +195,10 @@ FString OFB_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 		             new StringSink(cipherOut)
 	             )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
-	return UTF8_TO_TCHAR(cipherOut.c_str());
+	return cipherOut;
 }
 
-FString OFB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string OFB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
@@ -223,12 +216,11 @@ FString OFB_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 	                                              , padding
 	               )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
-	return UTF8_TO_TCHAR(plainOut.c_str());
+	return plainOut;
 }
 #pragma endregion
 #pragma region CTR
-FString CTR_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string CTR_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string cipher; //存密文
 	string cipherOut; //存输出的string密文
@@ -248,11 +240,10 @@ FString CTR_EnCrypto(string inPlain, BlockPaddingSchemeDef::BlockPaddingScheme p
 		             new StringSink(cipherOut)
 	             )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the cipher:%s"), UTF8_TO_TCHAR(cipherOut.c_str()));
-	return UTF8_TO_TCHAR(cipherOut.c_str());
+	return cipherOut;
 }
 
-FString CTR_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
+string CTR_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme padding)
 {
 	string plain; //存明文
 	string plainOut; //存输出的string明文
@@ -270,8 +261,7 @@ FString CTR_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 	                                              , padding
 	               )
 	);
-	UE_LOG(LogTemp, Warning, TEXT(" the recovered:%s"), UTF8_TO_TCHAR(plainOut.c_str()));
-	return UTF8_TO_TCHAR(plainOut.c_str());
+	return plainOut;
 }
 #pragma endregion
 #pragma region ECBFile Function
@@ -366,11 +356,9 @@ FString CTR_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme 
 //	return Reader;
 //}
 #pragma endregion
-auto UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECryActionType action,
-                                         ECryptPadding padding) -> FString
+string AESFunctionClass::AESFunctionLib(string inString, ECryptMode mode, ECryActionType action, ECryptPadding padding)
 {
-	FString OutString = "";
-	const string InStringTarget = TCHAR_TO_UTF8(*inString);
+	string OutString = "";
 	try
 	{
 		switch (action)
@@ -379,19 +367,19 @@ auto UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECry
 			switch (mode)
 			{
 			case ECryptMode::ECB:
-				OutString = ECB_EnCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = ECB_EnCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			case ECryptMode::CBC:
-				OutString = CBC_EnCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = CBC_EnCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			case ECryptMode::CFB:
-				OutString = CFB_EnCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = CFB_EnCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			case ECryptMode::OFB:
-				OutString = OFB_EnCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = OFB_EnCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			case ECryptMode::CTR:
-				OutString = CTR_EnCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = CTR_EnCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			default:
 				break;
@@ -401,19 +389,19 @@ auto UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECry
 			switch (mode)
 			{
 			case ECryptMode::ECB:
-				OutString = ECB_DeCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = ECB_DeCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			case ECryptMode::CBC:
-				OutString = CBC_DeCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = CBC_DeCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			case ECryptMode::CFB:
-				OutString = CFB_DeCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = CFB_DeCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			case ECryptMode::OFB:
-				OutString = OFB_DeCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = OFB_DeCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			case ECryptMode::CTR:
-				OutString = CTR_DeCrypto(InStringTarget, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
+				OutString = CTR_DeCrypto(inString, BlockPaddingSchemeDef::BlockPaddingScheme(int(padding)));
 				break;
 			default:
 				break;
@@ -425,7 +413,7 @@ auto UAESCryptoBPLibrary::AESFunctionLib(FString inString, ECryptMode mode, ECry
 	}
 	catch (const std::exception& e)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Crash for AESCripto Function :%s"), *FString(e.what()))
+		std::cout << e.what() << endl;
 	}
 
 	return OutString;

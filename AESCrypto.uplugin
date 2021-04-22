@@ -15,10 +15,15 @@
 	"IsExperimentalVersion": false,
 	"Installed": false,
 	"Modules": [
-		{
-			"Name": "AESCrypto",
-			"Type": "Runtime",
-			"LoadingPhase": "PreLoadingScreen"
-		}
+    {
+      "Name": "AESCrypto",
+      "Type": "Runtime",
+      "LoadingPhase": "PreLoadingScreen"
+    },
+    {
+      "Name": "UECrypto",
+      "Type": "Runtime",
+      "LoadingPhase": "PreLoadingScreen"
+    }
 	]
 }
