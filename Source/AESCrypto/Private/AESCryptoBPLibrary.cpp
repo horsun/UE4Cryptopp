@@ -265,96 +265,97 @@ string CTR_DeCrypto(string inCipher, BlockPaddingSchemeDef::BlockPaddingScheme p
 }
 #pragma endregion
 #pragma region ECBFile Function
-//bool UAESCryptoBPLibrary::AESFileEncrypto(FString Path, FString FileName)
-//{
-//	//判断文件存在
-//	if (!FPaths::FileExists(*Path))
-//	{
-//		return false;
-//	}
-//	//获取key
-//	SecByteBlock Key = GetKey();
-//
-//	//读取文件
-//	FArrayReader* Reader = new FArrayReader;
-//	FFileHelper::LoadFileToArray(*Reader, *Path);
-//	//定义一个二进制密文
-//	vector<byte> cipher;
-//	//设置长度
-//	cipher.resize(Reader->TotalSize() + AES::BLOCKSIZE);
-//	//定义个存二进制队列
-//	ArraySink as(&cipher[0], cipher.size());
-//
-//	ECB_Mode<AES>::Encryption e;
-//	e.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
-//
-//	//通过arraySource和encryption对文件流进行加密，并存在arraysink对象中
-//	ArraySource(Reader->GetData(), Reader->TotalSize(), true,
-//	            new StreamTransformationFilter(e, new Redirector(as),
-//	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
-//
-//	cipher.resize(as.TotalPutLength());
-//	TArray<uint8> data;
-//	data.Append(cipher.data(), cipher.size());
-//	//设置新文件保存
-//	FString Savepath = FPaths::GetPath(Path) + "/" + FileName;
-//	FFileHelper::SaveArrayToFile(data, *Savepath);
-//	return true;
-//};
-//
-//bool UAESCryptoBPLibrary::AESFileDecrypto(FString Path, FString FileName)
-//{
-//	//判断文件存在
-//	if (!FPaths::FileExists(*Path))
-//	{
-//		return false;
-//	}
-//	//读取文件
-//	FArrayReader* Reader = new FArrayReader;
-//	FFileHelper::LoadFileToArray(*Reader, *Path);
-//
-//	vector<byte> recover;
-//	recover.resize(Reader->TotalSize());
-//	ArraySink as(&recover[0], recover.size()); //定义个存二进制队列
-//
-//	SecByteBlock Key = GetKey();
-//	ECB_Mode<AES>::Decryption de;
-//	de.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
-//
-//	ArraySource(Reader->GetData(), Reader->TotalSize(), true,
-//	            new StreamTransformationFilter(de, new Redirector(as),
-//	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
-//	recover.resize(as.TotalPutLength());
-//	TArray<uint8> data;
-//	data.Append(recover.data(), recover.size());
-//	FString SavePath = FPaths::GetPath(Path) + "/" + FileName;
-//	FFileHelper::SaveArrayToFile(data, *SavePath);
-//	return false;
-//};
+bool AESFunctionClass::AESFileEncrypto(FString Path, FString FileName)
+{
+	//判断文件存在
+	if (!FPaths::FileExists(*Path))
+	{
+		return false;
+	}
+	//获取key
+	SecByteBlock Key = GetKey();
 
-//FArchive* UAESCryptoBPLibrary::MediaDecrypto(FString Path)
-//{
-//	if (!FPaths::FileExists(*Path))
-//	{
-//		return nullptr;
-//	}
-//	FArrayReader* Reader = new FArrayReader;
-//	FFileHelper::LoadFileToArray(*Reader, *Path);
-//
-//	vector<byte> recover;
-//	recover.resize(Reader->TotalSize());
-//	ArraySink as(&recover[0], recover.size()); //定义个存二进制队列
-//
-//	SecByteBlock Key = GetKey();
-//	ECB_Mode<AES>::Decryption de;
-//	de.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
-//
-//	ArraySource(Reader->GetData(), Reader->TotalSize(), true,
-//	            new StreamTransformationFilter(de, new Redirector(as),
-//	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
-//	recover.resize(as.TotalPutLength());
-//	return Reader;
-//}
+	//读取文件
+	TArray<uint8> Reader;
+	FFileHelper::LoadFileToArray(Reader, *Path);
+	//定义一个二进制密文
+	vector<byte> cipher;
+	//设置长度
+	cipher.resize(Reader.Num() + AES::BLOCKSIZE);
+	//定义个存二进制队列
+	ArraySink as(&cipher[0], cipher.size());
+
+	ECB_Mode<AES>::Encryption e;
+	e.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
+
+	//通过arraySource和encryption对文件流进行加密，并存在arraysink对象中
+	ArraySource(Reader.GetData(), Reader.Num(), true,
+	            new StreamTransformationFilter(e, new Redirector(as),
+	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
+
+	cipher.resize(as.TotalPutLength());
+	TArray<uint8> data;
+	data.Append(cipher.data(), cipher.size());
+	//设置新文件保存
+	FString Savepath = FPaths::GetPath(Path) + "/" + FileName;
+	FFileHelper::SaveArrayToFile(data, *Savepath);
+	return true;
+};
+
+bool AESFunctionClass::AESFileDecrypto(FString Path, FString FileName)
+{
+	//判断文件存在
+	if (!FPaths::FileExists(*Path))
+	{
+		return false;
+	}
+	//读取文件
+	TArray<uint8> Reader;
+	FFileHelper::LoadFileToArray(Reader, *Path);
+
+	vector<byte> recover;
+	recover.resize(Reader.Num());
+	ArraySink as(&recover[0], recover.size()); //定义个存二进制队列
+
+	SecByteBlock Key = GetKey();
+	ECB_Mode<AES>::Decryption de;
+	de.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
+
+	ArraySource(Reader.GetData(), Reader.Num(), true,
+	            new StreamTransformationFilter(de, new Redirector(as),
+	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
+	recover.resize(as.TotalPutLength());
+	TArray<uint8> data;
+	data.Append(recover.data(), recover.size());
+	FString SavePath = FPaths::GetPath(Path) + "/" + FileName;
+	FFileHelper::SaveArrayToFile(data, *SavePath);
+	return false;
+};
+
+bool  AESFunctionClass::MediaDecrypto(FString Path, TArray<uint8>& OutPut)
+{
+	if (!FPaths::FileExists(*Path))
+	{
+		return false;
+	}
+	TArray<uint8> Reader;
+	FFileHelper::LoadFileToArray(Reader, *Path);
+
+	vector<byte> recover;
+	recover.resize(Reader.Num());
+	ArraySink as(&recover[0], recover.size()); //定义个存二进制队列
+
+	SecByteBlock Key = GetKey();
+	ECB_Mode<AES>::Decryption de;
+	de.SetKey((byte*)Key, AES::MAX_KEYLENGTH);
+
+	ArraySource(Reader.GetData(), Reader.Num(), true,
+	            new StreamTransformationFilter(de, new Redirector(as),
+	                                           BlockPaddingSchemeDef::BlockPaddingScheme::PKCS_PADDING));
+	recover.resize(as.TotalPutLength());
+	OutPut.Append(recover.data(), recover.size());
+	return true;
+}
 #pragma endregion
 string AESFunctionClass::AESFunctionLib(string inString, ECryptMode mode, ECryActionType action, ECryptPadding padding)
 {

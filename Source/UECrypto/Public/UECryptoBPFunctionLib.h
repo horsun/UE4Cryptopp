@@ -13,7 +13,7 @@
 UENUM(BlueprintType)
 enum class ECryptMode_UE : uint8
 {
-	ECB=0,
+	ECB = 0,
 	CBC,
 	CFB,
 	OFB,
@@ -23,7 +23,7 @@ enum class ECryptMode_UE : uint8
 UENUM(BlueprintType)
 enum class ECryptPadding_UE : uint8
 {
-	NO_PADDING=0,
+	NO_PADDING = 0,
 
 	ZEROS_PADDING,
 
@@ -39,7 +39,7 @@ enum class ECryptPadding_UE : uint8
 UENUM(BlueprintType)
 enum class ECryActionType_UE : uint8
 {
-	Encrypt=0,
+	Encrypt = 0,
 	Decrypt,
 };
 
@@ -52,9 +52,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		static FString UEAESCryptoFunction(FString inString, ECryptMode_UE mode, ECryActionType_UE action, ECryptPadding_UE padding);
-	//UFUNCTION(BlueprintCallable)
-	//static bool AESFileDecrypto(FString Path, FString FileName);
-	//UFUNCTION(BlueprintCallable)
-	//static bool AESFileEncrypto(FString Path, FString FileName);
-	//static FArchive* MediaDecrypto(FString Path);
+	UFUNCTION(BlueprintCallable)
+		static bool AESFileDecryptoFunction(FString Path, FString FileName);
+	UFUNCTION(BlueprintCallable)
+		static bool AESFileEncryptoFunction(FString Path, FString FileName);
+	static FArchive* MediaDecryptoFunction(FString Path);
 };

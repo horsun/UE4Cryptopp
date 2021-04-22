@@ -39,9 +39,7 @@ public:
 	AESFunctionClass() {};
 	~AESFunctionClass() {};
 	static string AESFunctionLib(string inString, ECryptMode mode, ECryActionType action, ECryptPadding padding);
-	//UFUNCTION(BlueprintCallable)
-	//static bool AESFileDecrypto(FString Path, FString FileName);
-	//UFUNCTION(BlueprintCallable)
-	//static bool AESFileEncrypto(FString Path, FString FileName);
-	//static FArchive* MediaDecrypto(FString Path);
+	static bool AESFileDecrypto(FString Path, FString FileName);
+	static bool AESFileEncrypto(FString Path, FString FileName);
+	static bool MediaDecrypto(FString Path, TArray<uint8>& OutPut);
 };
